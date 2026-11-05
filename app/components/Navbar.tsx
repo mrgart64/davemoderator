@@ -45,7 +45,7 @@ export default function Navbar() {
                     DaveMod
                   </span>
                   <div className="text-[10px] italic font-medium font-mono tracking-wider uppercase text-neutral-700">
-                    AI Moderator Penipuan
+                    Asisten Moderasi Pesan
                   </div>
                 </div>
               </Link>

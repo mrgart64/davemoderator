@@ -7,7 +7,7 @@ export const Contact: React.FC = () => {
     const modal = useModal()
     return (
         <section id="kontak-developer" className="py-12 sm:py-16 max-w-7xl mx-auto font-mono px-3 sm:px-4">
-            <div>
+            <div className='mb-4'>
                 {/* Header Section */}
                 <div className="text-center mb-8 sm:mb-12">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 border border-neutral-400 text-neutral-900 text-xs font-medium mb-3">
@@ -22,7 +22,7 @@ export const Contact: React.FC = () => {
                 </div>
 
                 {/* CONTAINER UTAMA (Card Tunggal / Profile Box) */}
-                <div className="bg-white rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 transition-all border border-neutral-200 shadow-sm">
+                <div className="bg-white p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8 transition-all">
 
                     {/* FOTO PROFIL DEVELOPER */}
                     <div className="flex flex-col items-center shrink-0">
