@@ -16,6 +16,7 @@ import { Bar } from 'react-chartjs-2';
 
 import { descriptions } from '@/data/descriptions';
 import { samples } from '@/data/samples';
+import { AlertTriangleIcon, CheckIcon, FileWarning } from 'lucide-react';
 
 // Registrasi komponen Chart.js
 ChartJS.register(
@@ -543,8 +544,22 @@ export default function MessageDetector() {
                                     <div className="mb-4 sm:mb-6 space-y-2">
                                         <div className="flex items-center gap-2">
                                             <div className="text-xs text-neutral-800">JENIS PESAN:</div>
-                                            <div className={`text-xs sm:text-base font-bold tracking-wide ${isRedFlag() ? 'text-red-500' : 'text-green-500'} inline-block px-2 py-0.5`}>
+                                            <div className={`flex text-xs sm:text-base font-bold tracking-wide ${isRedFlag() ? 'text-red-500' : 'text-green-500'}  px-2 py-0.5`}>
                                                 [{result.prediction.toUpperCase()}]
+                                                <span className='ms-4 flex'>
+                                                    {
+                                                        isRedFlag() ? (
+                                                            <span className='flex gap-2 blinking-icon'>
+                                                                (Red Flag) <AlertTriangleIcon />
+
+                                                            </span>
+                                                        ) : (
+                                                            <span className='flex gap-2'>
+                                                                (Green Flag) <CheckIcon />
+                                                            </span>
+                                                        )
+                                                    }
+                                                </span>
                                             </div>
                                         </div>
                                         <p className="text-xs sm:text-sm text-neutral-700 font-mono leading-relaxed">
