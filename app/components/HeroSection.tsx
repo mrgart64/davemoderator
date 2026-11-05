@@ -58,10 +58,10 @@ export default function HeroSection() {
                             </button>
 
                             <a
-                                href="#tentang"
+                                href="#kemampuan-ai"
                                 className="w-full sm:w-auto px-7 py-3.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 border border-neutral-400/80 rounded-xl text-sm font-semibold transition-all text-center"
                             >
-                                Install DaveMod
+                                Lihat Fitur
                             </a>
                         </div>
                     </div>

@@ -56,7 +56,7 @@ const ABILITIES_DATA: AbilityItem[] = [
         icon: <Target className="w-5 h-5 text-neutral-800" />,
         title: 'Deteksi Berbasis Konteks',
         description:
-            'Dilatih secara spesifik untuk mengenali pola manipulatif seperti tawaran kerja palsu, tautan phishing, giveaway palsu, promosi judi online, pinjol, hingga investasi bodong.',
+            'Dilatih secara spesifik untuk mengenali pola manipulatif seperti tawaran kerja palsu, tautan phishing, giveaway palsu, promosi judi online, pinjol, hingga investasi bodong. Akurasi 80-90%.',
         badgeLabel: 'ACCURACY:',
         badgeValue: 'High Precision',
     },

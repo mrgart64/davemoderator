@@ -11,8 +11,11 @@ export const metadata: Metadata = {
   title: "DaveMod — AI Moderator & Deteksi Penipuan Digital",
   description: "Aplikasi web berbasis AI edge ringan untuk mendeteksi penipuan online, lowongan kerja palsu, pinjol ilegal, dan pesan penipuan secara instan.",
   keywords: ["DaveMod", "AI Deteksi Penipuan", "Scam Detector", "BASIS-64", "Cloudflare Workers", "Next.js"],
-  authors: [{ name: "Gabriel Ado Ramos Tukan", url: "https://gart.basis64.com" }],
+  authors: [{ name: "Gabriel Ado Ramos Tukan", url: "https://gart.basis64.com" }, { name: "BASIS-64", url: "https://basis64.com" }],
   creator: "Gabriel Ado Ramos Tukan",
+  icons: {
+    icon: "/favicon.ico"
+  },
   openGraph: {
     type: "website",
     locale: "id_ID",
