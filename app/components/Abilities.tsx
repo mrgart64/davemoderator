@@ -65,7 +65,7 @@ const ABILITIES_DATA: AbilityItem[] = [
         icon: <Cpu className="w-5 h-5 text-neutral-800" />,
         title: 'Model Efisien & Ringan',
         description:
-            'Model AI DaveMod memiliki ukuran file sangat kecil (hanya 170-250 KB), memungkinkan pemuatan cepat bahkan di koneksi internet seluler yang lambat.',
+            'Model AI DaveMod memiliki ukuran file sangat kecil (hanya 170-250 KB), memungkinkan pemuatan cepat bahkan di koneksi internet seluler yang lambat. Model AI DaveMod dilatih dari nol dengan dataset berbagai jenis pesan.',
         badgeLabel: 'FOOTPRINT:',
         badgeValue: 'Ultra Lightweight',
     },

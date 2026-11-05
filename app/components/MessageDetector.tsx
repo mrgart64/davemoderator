@@ -240,9 +240,26 @@ export default function MessageDetector() {
             const hasFreeEmail = freeEmailRegex.test(inputText);
             const hasPersonalPhone = phoneRegex.test(inputText);
 
+            const domainHyphenRegex = /https?:\/\/([^\/]+\-)?[^\/]*\-/i;
+
             // Algoritma rule-based untuk guardrail dan mengurangi kemungkinan false positive
 
             if ((hasFreeEmail || hasPersonalPhone) && (topPrediction.category == 'tawaran_kerja_asli'
+                && (secondaryPrediction.category == 'tawaran_kerja_palsu'
+                    || secondaryPrediction.category == 'phising'
+                    || secondaryPrediction.category == 'investasi_bodong'
+                    || secondaryPrediction.category == 'giveaway_palsu'
+                    || secondaryPrediction.category == 'judol'
+                    || secondaryPrediction.category == 'pinjol'
+                ))) {
+                const primarySecondaryScore = topPrediction.score + secondaryPrediction.score;
+                const newPrimaryScore = primarySecondaryScore * 0.4;
+                const newSecondaryScore = primarySecondaryScore * 0.6;
+                categoryScores[0].score = newPrimaryScore;
+                categoryScores[1].score = newSecondaryScore;
+                topPrediction = categoryScores[1];
+                secondaryPrediction = categoryScores[0];
+            } else if (domainHyphenRegex.test(inputText) && (topPrediction.category == 'penting'
                 && (secondaryPrediction.category == 'tawaran_kerja_palsu'
                     || secondaryPrediction.category == 'phising'
                     || secondaryPrediction.category == 'investasi_bodong'
@@ -542,27 +559,35 @@ export default function MessageDetector() {
 
                                     {/* Teks & Deskripsi Utama */}
                                     <div className="mb-4 sm:mb-6 space-y-2">
-                                        <div className="flex items-center gap-2">
-                                            <div className="text-xs text-neutral-800">JENIS PESAN:</div>
-                                            <div className={`flex text-xs sm:text-base font-bold tracking-wide ${isRedFlag() ? 'text-red-500' : 'text-green-500'}  px-2 py-0.5`}>
-                                                [{result.prediction.toUpperCase()}]
-                                                <span className='ms-4 flex'>
-                                                    {
-                                                        isRedFlag() ? (
-                                                            <span className='flex gap-2 blinking-icon'>
-                                                                (Red Flag) <AlertTriangleIcon />
+                                        {/* Grid Container untuk merapikan Label, Titik Dua, dan Jawaban */}
+                                        <div className="grid grid-cols-[auto_auto_1fr] items-center gap-x-2 gap-y-1 text-xs sm:text-sm">
 
-                                                            </span>
-                                                        ) : (
-                                                            <span className='flex gap-2'>
-                                                                (Green Flag) <CheckIcon />
-                                                            </span>
-                                                        )
-                                                    }
-                                                </span>
+                                            {/* Row 1: STATUS */}
+                                            <span className="text-neutral-800 font-medium">STATUS</span>
+                                            <span className="text-neutral-800 font-medium">:</span>
+                                            <div className={`font-bold tracking-wide ${isRedFlag() ? 'text-red-500' : 'text-lime-600'}`}>
+                                                {isRedFlag() ? (
+                                                    <span className="flex items-center gap-2">
+                                                        BERPOTENSI ANCAMAN
+                                                    </span>
+                                                ) : (
+                                                    <span className="flex items-center gap-2">
+                                                        PESAN AMAN
+                                                    </span>
+                                                )}
                                             </div>
+
+                                            {/* Row 2: JENIS PESAN */}
+                                            <span className="text-neutral-800 font-medium">JENIS PESAN</span>
+                                            <span className="text-neutral-800 font-medium">:</span>
+                                            <div className="font-bold tracking-wide text-neutral-800">
+                                                [{result.prediction.toUpperCase()}]
+                                            </div>
+
                                         </div>
-                                        <p className="text-xs sm:text-sm text-neutral-700 font-mono leading-relaxed">
+
+                                        {/* Deskripsi */}
+                                        <p className="text-xs sm:text-sm text-neutral-700 font-mono leading-relaxed pt-1">
                                             {getDescription()}
                                         </p>
                                     </div>
@@ -583,7 +608,7 @@ export default function MessageDetector() {
                                                             d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                                                         />
                                                         <path
-                                                            className={`${isRedFlag() ? 'text-red-500' : 'text-green-500'} transition-all duration-300 ease-out`}
+                                                            className={`${isRedFlag() ? 'text-red-500' : 'text-lime-500'} transition-all duration-300 ease-out`}
                                                             strokeDasharray={`${animatedConfidence}, 100`}
                                                             strokeWidth="3.5"
                                                             strokeLinecap="round"
@@ -593,8 +618,8 @@ export default function MessageDetector() {
                                                         />
                                                     </svg>
 
-                                                    <div className={`absolute inset-0 flex items-center justify-center text-base sm:text-lg font-bold transition-transform duration-300 group-hover:scale-110 ${isRedFlag() ? 'text-red-500' : 'text-green-500'}`}>
-                                                        {animatedConfidence}%
+                                                    <div className={`absolute inset-0 flex items-center justify-center text-base sm:text-lg font-bold transition-transform duration-300 group-hover:scale-110 ${isRedFlag() ? 'text-red-500' : 'text-lime-500'}`}>
+                                                        {animatedConfidence.toFixed(2)}%
                                                     </div>
                                                 </div>
 

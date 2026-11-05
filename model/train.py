@@ -76,7 +76,7 @@ model.compile(
 
 # 4. Training Model
 print("Training model...")
-model.fit(padded, labels, epochs=100, batch_size=None, verbose=1, shuffle=True)
+model.fit(padded, labels, epochs=99, batch_size=None, verbose=1, shuffle=True)
 
 # 5. Export ke TFLite dengan Optimasi
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
