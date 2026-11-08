@@ -49,7 +49,7 @@ export const Contact: React.FC = () => {
                                 Gabriel Ado Ramos Tukan
                             </h3>
                             <p className="text-xs sm:text-sm text-neutral-600 mb-6 leading-relaxed">
-                                Mahasiswa S1 Informatika Universitas Mulawarman &amp; Independent Software Engineer yang berfokus pada teknologi web, cloud edge, dan sistem keamanan AI ringan.
+                                Mahasiswa S1 Informatika Universitas Mulawarman &amp; full stack JS developer yang berfokus pada pembuatan web dan AI engineering.
                             </p>
                         </div>
 
