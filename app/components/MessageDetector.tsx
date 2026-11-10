@@ -473,10 +473,10 @@ export default function MessageDetector() {
                         </div>
                         <div className="space-y-1">
                             <h3 className="text-sm sm:text-base font-bold text-neutral-900">
-                                Memuat Model ONNX &amp; Metadata
+                                Memuat Library ONNX Runtime &amp; Model AI
                             </h3>
                             <p className="text-xs text-neutral-500 font-mono">
-                                Mohon tunggu sebentar, sistem sedang menyiapkan engine AI ke browser Anda...
+                                Mohon tunggu sebentar, sistem sedang menyiapkan engine AI ke browser Anda, proses ini mungkin memakan waktu beberapa detik...
                             </p>
                         </div>
                     </div>
