@@ -6,6 +6,10 @@
 
 Berjalan langsung di _browser_ menggunakan **ONNX Runtime Web**, DaveMod tidak memerlukan ketergantungan ke API eksternal (seperti Gemini atau Claude). Pendekatan ini membuat pemrosesan menjadi ultra-responsif, menjamin privasi data secara penuh, serta efisien dengan ukuran model yang sangat ringan (hanya **170–250 KB**).
 
+Nama Tim: BASIS-64
+Kode Tim: MIT-009
+Anggota: Gabriel Ado Ramos Tukan
+
 ---
 
 ## 10 Kategori Klasifikasi Pesan
