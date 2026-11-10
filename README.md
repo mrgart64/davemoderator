@@ -2,9 +2,9 @@
 
 # DaveMod: AI Asisten Moderasi & Deteksi Pesan Penipuan
 
-**DaveMod** adalah AI berbasis _neural network_ yang dirancang khusus untuk memoderasi pesan teks secara otomatis. Dilatih menggunakan dataset komprehensif, DaveMod mampu mengidentifikasi berbagai bentuk manipulasi digital—mulai dari tawaran kerja palsu, investasi bodong, promosi judi online, hingga _phishing_.
+**DaveMod** adalah AI berbasis _neural network_ yang dirancang khusus untuk memoderasi pesan teks secara otomatis. Dilatih menggunakan dataset komprehensif, DaveMod mampu mengidentifikasi berbagai bentuk manipulasi digital—mulai dari tawaran kerja palsu, investasi bodong, promosi judi online, hingga _phishing_. AI DaveMod dilatih dari nol dengan dataset berisi berbagai pesan untuk memastikan AI ini efisien sesuai dengan fungsinya.
 
-Berjalan langsung di _browser_ menggunakan **ONNX Runtime Web**, DaveMod tidak memerlukan dependensi ke API eksternal (seperti Gemini atau Claude). Pendekatan ini membuat pemrosesan menjadi ultra-responsif, menjamin privasi data secara penuh, serta efisien dengan ukuran model yang sangat ringan (hanya **170–250 KB**).
+Berjalan langsung di _browser_ menggunakan **ONNX Runtime Web**, DaveMod tidak memerlukan ketergantungan ke API eksternal (seperti Gemini atau Claude). Pendekatan ini membuat pemrosesan menjadi ultra-responsif, menjamin privasi data secara penuh, serta efisien dengan ukuran model yang sangat ringan (hanya **170–250 KB**).
 
 ---
 
@@ -46,7 +46,8 @@ DaveMod mampu menganalisis dan mengklasifikasikan pesan teks ke dalam **10 kateg
 
 ### ✨ Key Highlights
 
-- **100% Client-Side:** Bebas latensi server eksternal dan menjaga privasi pengguna secara penuh (_zero data leak_).
+- **100% Client-Side:** Tanpa API AI eksternal dan menjaga privasi pengguna secara penuh karena hanya _client-side_ (_zero data leak_).
+- **Specific Use Case:** Model AI DaveMod dilatih dari **nol** agar efisien untuk tugas yang spesifik seperti deteksi pesan tanpa harus bergantung ke API AI eksternal yang seringkali boros dan jumlah request nya terbatas.
 - **Model Ultra-Lightweight:** Ukuran _binary_ model AI sangat efisien, hanya **170–250 KB**.
 - **Deteksi Kontekstual:** Andal mengenali pola bahasa gaul (_slang_), manipulasi angka, dan teks terselubung secara real-time.
 
@@ -85,8 +86,21 @@ Project ini dibuat dengan NextJS.
 - `pnpm run dev` untuk menjalankan NextJS dev server.
 - `pnpm run build` builds the NextJS output.
 
-### Model AI (di folder model)
+# AI Model (Python)
+
+Ini adalah AI model dari DaveMod, sistem inti yang digunakan untuk deteksi pesan.
+
+## Model AI (di folder model)
+
+- `python train.py` untuk melatih AI.
+- `python predict.py` untuk menguji output AI.
+- `./convert.sh` untuk konversi tflite ke format onnx.
+
+## File (di folder model)
 
 - `train.py` untuk melatih AI.
 - `predict.py` untuk menguji output AI.
-- `./convert.sh` untuk konversi tflite ke format onnx.
+- `dataset.json` dataset ayng digunakan untuk melatih AI dari nol.
+- `text_moderator.tflite` model AI.
+- `text_moderator.onnx` model AI yang akan digunakan di client-side web dengan ONNX Runtime.
+- `convert.sh` untuk konversi tflite ke format onnx.

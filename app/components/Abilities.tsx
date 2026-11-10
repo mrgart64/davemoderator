@@ -56,9 +56,9 @@ const ABILITIES_DATA: AbilityItem[] = [
         icon: <Target className="w-5 h-5 text-neutral-800" />,
         title: 'Deteksi Berbasis Konteks',
         description:
-            'Dilatih secara spesifik untuk mengenali pola manipulatif seperti tawaran kerja palsu, tautan phishing, giveaway palsu, promosi judi online, pinjol, hingga investasi bodong. Akurasi 80-90%.',
+            'Dilatih secara spesifik untuk mengenali pola manipulatif seperti tawaran kerja palsu, tautan phishing, giveaway palsu, promosi judi online, pinjol, hingga investasi bodong. AI DaveMod dilatih dari nol agar efisien untuk penggunaan yang spesifik dan menghindari ketergantungan pada API AI eksternal. Akurasi AI 80-90%.',
         badgeLabel: 'ACCURACY:',
-        badgeValue: 'High Precision',
+        badgeValue: '80-90%',
     },
     {
         id: 'lightweight-model',
@@ -148,7 +148,7 @@ const OUTPUT_CATEGORIES: CategoryItem[] = [
     {
         code: 'netral',
         name: 'Netral / Umum',
-        type: 'neutral',
+        type: 'legit',
         description: 'Pesan percakapan biasa sehari-hari, obrolan santai, atau teks umum tanpa indikasi ancaman.'
     },
 ];

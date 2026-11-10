@@ -36,7 +36,7 @@ export default function HeroSection() {
 
                         {/* Subtitle Deskripsi */}
                         <p className="text-sm sm:text-base text-neutral-800 max-w-xl mb-8 leading-relaxed">
-                            DaveMod adalah AI moderasi pesan berbasis neural network yang dilatih dengan dataset dari berbagai jenis pesan, dilengkapi dengan visualisasi diagram yang menampilkan beberapa kemungkinan pesan dan juga memberikan saran tentang apa yang harus dilakukan. DaveMod sangat responsif dan ringan karena tidak menggunakan API AI eksternal.
+                            DaveMod adalah AI moderasi pesan berbasis neural network yang dilatih dari nol dengan dataset dari berbagai jenis pesan, dilengkapi dengan visualisasi diagram yang menampilkan beberapa kemungkinan pesan dan juga memberikan saran tentang apa yang harus dilakukan. DaveMod sangat responsif dan ringan karena tidak menggunakan API AI eksternal.
                             {/* Platform pelindung interaktif untuk memberdayakan anak muda Indonesia agar mampu mengenali jebakan di dunia digital—mulai dari lowongan kerja palsu, <i>giveaway</i>, akun menyamar, hingga informasi menyesatkan—serta tahu persis apa yang harus dilakukan. */}
                         </p>
 
