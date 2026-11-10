@@ -2,7 +2,7 @@
 
 # DaveMod: AI Asisten Moderasi & Deteksi Pesan Penipuan
 
-**DaveMod** adalah AI berbasis _neural network_ yang dirancang khusus untuk memoderasi pesan teks secara otomatis. Dilatih menggunakan dataset komprehensif, DaveMod mampu mengidentifikasi berbagai bentuk manipulasi digital—mulai dari tawaran kerja palsu, investasi bodong, promosi judi online, hingga _phishing_. AI DaveMod dilatih dari nol dengan dataset berisi berbagai pesan untuk memastikan AI ini efisien sesuai dengan fungsinya.
+**DaveMod** adalah AI berbasis _neural network_ yang dirancang khusus untuk memoderasi pesan teks secara otomatis. Dilatih menggunakan dataset komprehensif, DaveMod mampu mengidentifikasi berbagai bentuk manipulasi digital—mulai dari tawaran kerja palsu, investasi bodong, promosi judi online, hingga _phishing_. AI DaveMod dilatih dari nol dengan dataset berisi berbagai pesan untuk memastikan AI ini efisien sesuai dengan fungsinya yang spesifik.
 
 Berjalan langsung di _browser_ menggunakan **ONNX Runtime Web**, DaveMod tidak memerlukan ketergantungan ke API eksternal (seperti Gemini atau Claude). Pendekatan ini membuat pemrosesan menjadi ultra-responsif, menjamin privasi data secara penuh, serta efisien dengan ukuran model yang sangat ringan (hanya **170–250 KB**).
 
