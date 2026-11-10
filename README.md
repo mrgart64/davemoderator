@@ -82,9 +82,11 @@ Project ini dibuat dengan NextJS.
 
 ## Scripts
 
-- `npm run dev` starts the vinext dev server.
-- `npm run build` builds the NextJS output.
-  <!-- - `pnpm run start` previews the built Worker locally. -->
-  <!-- - `pnpm run deploy` deploys the Cloudflare Worker. -->
+- `pnpm run dev` untuk menjalankan NextJS dev server.
+- `pnpm run build` builds the NextJS output.
 
-<!-- gart@basis64:~/Desktop/Programming/nextjs/davemod$ pnpm i sass-embedded --registry=https://registry.npmmirror.com -->
+### Model AI (di folder model)
+
+- `train.py` untuk melatih AI.
+- `predict.py` untuk menguji output AI.
+- `./convert.sh` untuk konversi tflite ke format onnx.
