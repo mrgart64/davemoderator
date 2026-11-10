@@ -459,242 +459,259 @@ export default function MessageDetector() {
                         Tempelkan teks SMS, pesan WhatsApp, atau caption media sosial di bawah ini untuk mendeteksi potensi penipuan dengan DaveMod.
                     </p>
 
-                    {!modelLoaded && !loadError && (
-                        <p className="text-xs text-blue-600 mt-2">⏳ Memuat model ONNX &amp; metadata ke browser...</p>
-                    )}
                     {loadError && (
                         <p className="text-xs text-red-600 mt-2">❌ Gagal memuat model: {loadError}</p>
                     )}
                 </div>
 
-                {/* GRID CONTAINER utama: 1 kolom di mobile, 2 kolom di tablet/desktop */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 items-stretch">
-
-                    {/* ==================== KIRI: KOTAK INPUT ==================== */}
-                    <div className="bg-white border-0 sm:border sm:border-neutral-400/80 rounded-2xl p-4 sm:p-6 shadow-none sm:shadow-sm h-full flex flex-col justify-between">
-                        <div className="flex-1 flex flex-col">
-                            {/* Header Label & Opsi Checklist */}
-                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
-                                <label className="block text-xs font-semibold text-neutral-800">
-                                    MASUKKAN TEKS PESAN:
-                                </label>
-
-                                <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-mono text-neutral-700 hover:text-neutral-900 transition-colors">
-                                    <input
-                                        type="checkbox"
-                                        checked={isAutoDetect}
-                                        onChange={(e) => setIsAutoDetect(e.target.checked)}
-                                        className="w-4 h-4 rounded border-neutral-300 text-neutral-800 focus:ring-neutral-800 accent-neutral-800 cursor-pointer"
-                                    />
-                                    <span>Auto-Deteksi Otomatis</span>
-                                </label>
-                            </div>
-
-                            <textarea
-                                value={inputText}
-                                onChange={(e) => setInputText(e.target.value)}
-                                placeholder="Contoh: 'Baru nemu situs DEWAASEP88 yang beneran bayar lunas...'"
-                                rows={12}
-                                disabled={!modelLoaded}
-                                className="w-full flex-1 min-h-[180px] bg-neutral-50 text-neutral-900 border border-neutral-300 rounded-xl p-3 sm:p-4 text-xs sm:text-sm font-mono focus:outline-none focus:ring-2 focus:ring-neutral-800 resize-none transition-all disabled:opacity-50"
-                            />
+                {!modelLoaded && !loadError ? (
+                    /* ==================== TAMPILAN LOADING SAAT MODEL ONNX DIMUAT ==================== */
+                    <div className="bg-white border border-neutral-300 rounded-2xl mx-4 p-8 sm:p-16 max-w-md sm:mx-auto text-center shadow-sm my-8 flex flex-col items-center justify-center space-y-4 animate-in fade-in duration-300">
+                        <div className="relative w-12 h-12">
+                            <div className="absolute inset-0 rounded-full border-4 border-neutral-200"></div>
+                            <div className="absolute inset-0 rounded-full border-4 border-neutral-800 border-t-transparent animate-spin"></div>
                         </div>
-
-                        {/* Tombol Sampel & Action */}
-                        <div className="flex flex-col gap-3 sm:gap-4 mt-4 pt-4 border-t border-neutral-200">
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                                <span className="text-xs text-neutral-800 font-mono w-full sm:w-auto">Coba sampel:</span>
-                                {samples.map((item, idx) => (
-                                    <button
-                                        key={idx}
-                                        type="button"
-                                        onClick={() => setInputText(getRandomMessage(item.text))}
-                                        className="text-xs bg-neutral-100 hover:bg-neutral-200 text-neutral-800 border border-neutral-300 px-2.5 py-1 rounded-lg transition-all font-mono cursor-pointer"
-                                    >
-                                        {item.label}
-                                    </button>
-                                ))}
-                            </div>
-
-                            <button
-                                onClick={handleAnalyze}
-                                disabled={!inputText.trim() || isAutoDetect || isAnalyzing || !modelLoaded}
-                                className="w-full py-3 bg-neutral-800 hover:bg-neutral-900 disabled:opacity-50 text-neutral-50 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer disabled:cursor-not-allowed"
-                            >
-                                {isAnalyzing ? (
-                                    <>
-                                        <span className="w-3 h-3 border-2 border-neutral-400 border-t-neutral-50 rounded-full animate-spin"></span>
-                                        <span>Memindai...</span>
-                                    </>
-                                ) : isAutoDetect ? (
-                                    <span>Auto Deteksi Aktif</span>
-                                ) : (
-                                    <span>Analisis Sekarang</span>
-                                )}
-                            </button>
+                        <div className="space-y-1">
+                            <h3 className="text-sm sm:text-base font-bold text-neutral-900">
+                                Memuat Model ONNX &amp; Metadata
+                            </h3>
+                            <p className="text-xs text-neutral-500 font-mono">
+                                Mohon tunggu sebentar, sistem sedang menyiapkan engine AI ke browser Anda...
+                            </p>
                         </div>
                     </div>
+                ) : (
+                    /* ==================== KONTEN UTAMA (MUNCUL SETELAH MODEL LOADED) ==================== */
+                    <div className="animate-in fade-in duration-500">
+                        {/* GRID CONTAINER utama: 1 kolom di mobile, 2 kolom di tablet/desktop */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 items-stretch">
 
-                    {/* ==================== KANAN: HASIL PREDIKSI & CHART ==================== */}
-                    <div className="h-full">
-                        {result ? (
-                            <div className="bg-white text-neutral-900 border-0 sm:border sm:border-neutral-400/80 rounded-2xl p-4 sm:p-6 shadow-none sm:shadow-sm font-mono h-full flex flex-col justify-between transition-all duration-500 ease-out animate-in fade-in slide-in-from-bottom-4">
-                                <div>
-                                    {/* Header Result */}
-                                    <div className="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-neutral-300 flex justify-between items-center gap-3 text-sm sm:text-base text-neutral-600">
-                                        <strong className="text-neutral-900 flex items-center gap-2 sm:gap-3 text-xs sm:text-base">
-                                            <span className="relative flex h-3 w-3">
-                                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neutral-400 opacity-75"></span>
-                                                <span className="relative inline-flex rounded-full h-3 w-3 bg-neutral-700"></span>
-                                            </span>
-                                            Hasil Deteksi (Recognize)
-                                        </strong>
-                                        <button
-                                            onClick={() => setResult(null)}
-                                            className="text-neutral-600 hover:text-red-600 transition-all duration-200 whitespace-nowrap cursor-pointer font-bold text-xs sm:text-sm"
-                                        >
-                                            [X] Tutup
-                                        </button>
+                            {/* ==================== KIRI: KOTAK INPUT ==================== */}
+                            <div className="bg-white border-0 sm:border sm:border-neutral-400/80 rounded-2xl p-4 sm:p-6 shadow-none sm:shadow-sm h-full flex flex-col justify-between">
+                                <div className="flex-1 flex flex-col">
+                                    {/* Header Label & Opsi Checklist */}
+                                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
+                                        <label className="block text-xs font-semibold text-neutral-800">
+                                            MASUKKAN TEKS PESAN:
+                                        </label>
+
+                                        <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-mono text-neutral-700 hover:text-neutral-900 transition-colors">
+                                            <input
+                                                type="checkbox"
+                                                checked={isAutoDetect}
+                                                onChange={(e) => setIsAutoDetect(e.target.checked)}
+                                                className="w-4 h-4 rounded border-neutral-300 text-neutral-800 focus:ring-neutral-800 accent-neutral-800 cursor-pointer"
+                                            />
+                                            <span>Auto-Deteksi Otomatis</span>
+                                        </label>
                                     </div>
 
-                                    {/* Teks & Deskripsi Utama */}
-                                    <div className="mb-4 sm:mb-6 space-y-2">
-                                        {/* Grid Container untuk merapikan Label, Titik Dua, dan Jawaban */}
-                                        <div className="grid grid-cols-[auto_auto_1fr] items-center gap-x-2 gap-y-1 text-xs sm:text-sm">
+                                    <textarea
+                                        value={inputText}
+                                        onChange={(e) => setInputText(e.target.value)}
+                                        placeholder="Contoh: 'Baru nemu situs DEWAASEP88 yang beneran bayar lunas...'"
+                                        rows={12}
+                                        disabled={!modelLoaded}
+                                        className="w-full flex-1 min-h-[180px] bg-neutral-50 text-neutral-900 border border-neutral-300 rounded-xl p-3 sm:p-4 text-xs sm:text-sm font-mono focus:outline-none focus:ring-2 focus:ring-neutral-800 resize-none transition-all disabled:opacity-50"
+                                    />
+                                </div>
 
-                                            {/* Row 1: STATUS */}
-                                            <span className="text-neutral-800 font-medium">STATUS</span>
-                                            <span className="text-neutral-800 font-medium">:</span>
-                                            <div className={`font-bold tracking-wide ${isRedFlag() ? 'text-red-500' : 'text-lime-600'}`}>
-                                                {isRedFlag() ? (
-                                                    <span className="flex items-center gap-2">
-                                                        BERPOTENSI ANCAMAN
-                                                    </span>
-                                                ) : (
-                                                    <span className="flex items-center gap-2">
-                                                        PESAN AMAN
-                                                    </span>
-                                                )}
-                                            </div>
-
-                                            {/* Row 2: JENIS PESAN */}
-                                            <span className="text-neutral-800 font-medium">JENIS PESAN</span>
-                                            <span className="text-neutral-800 font-medium">:</span>
-                                            <div className="font-bold tracking-wide text-neutral-800">
-                                                [{result.prediction.toUpperCase()}]
-                                            </div>
-
-                                        </div>
-
-                                        {/* Deskripsi */}
-                                        <p className="text-xs sm:text-sm text-neutral-700 font-mono leading-relaxed pt-1">
-                                            {getDescription()}
-                                        </p>
+                                {/* Tombol Sampel & Action */}
+                                <div className="flex flex-col gap-3 sm:gap-4 mt-4 pt-4 border-t border-neutral-200">
+                                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                                        <span className="text-xs text-neutral-800 font-mono w-full sm:w-auto">Coba sampel:</span>
+                                        {samples.map((item, idx) => (
+                                            <button
+                                                key={idx}
+                                                type="button"
+                                                onClick={() => setInputText(getRandomMessage(item.text))}
+                                                className="text-xs bg-neutral-100 hover:bg-neutral-200 text-neutral-800 border border-neutral-300 px-2.5 py-1 rounded-lg transition-all font-mono cursor-pointer"
+                                            >
+                                                {item.label}
+                                            </button>
+                                        ))}
                                     </div>
 
-                                    {/* Circle & Chart Container */}
-                                    <div className="space-y-4">
+                                    <button
+                                        onClick={handleAnalyze}
+                                        disabled={!inputText.trim() || isAutoDetect || isAnalyzing || !modelLoaded}
+                                        className="w-full py-3 bg-neutral-800 hover:bg-neutral-900 disabled:opacity-50 text-neutral-50 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer disabled:cursor-not-allowed"
+                                    >
+                                        {isAnalyzing ? (
+                                            <>
+                                                <span className="w-3 h-3 border-2 border-neutral-400 border-t-neutral-50 rounded-full animate-spin"></span>
+                                                <span>Memindai...</span>
+                                            </>
+                                        ) : isAutoDetect ? (
+                                            <span>Auto Deteksi Aktif</span>
+                                        ) : (
+                                            <span>Analisis Sekarang</span>
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
 
-                                        {/* Circle Progress Bar */}
-                                        <div className="bg-neutral-50 sm:bg-white border border-neutral-200 sm:border-neutral-300 rounded-xl p-4 flex items-center justify-center">
-                                            <div className="flex flex-col items-center justify-center text-center">
-                                                <div className="relative w-24 h-24 sm:w-28 sm:h-28 mb-2 group">
-                                                    <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                                                        <path
-                                                            className="text-neutral-200"
-                                                            strokeWidth="3.5"
-                                                            stroke="currentColor"
-                                                            fill="none"
-                                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                                        />
-                                                        <path
-                                                            className={`${isRedFlag() ? 'text-red-500' : 'text-lime-500'} transition-all duration-300 ease-out`}
-                                                            strokeDasharray={`${animatedConfidence}, 100`}
-                                                            strokeWidth="3.5"
-                                                            strokeLinecap="round"
-                                                            stroke="currentColor"
-                                                            fill="none"
-                                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                                        />
-                                                    </svg>
+                            {/* ==================== KANAN: HASIL PREDIKSI & CHART ==================== */}
+                            <div className="h-full">
+                                {result ? (
+                                    <div className="bg-white text-neutral-900 border-0 sm:border sm:border-neutral-400/80 rounded-2xl p-4 sm:p-6 shadow-none sm:shadow-sm font-mono h-full flex flex-col justify-between transition-all duration-500 ease-out animate-in fade-in slide-in-from-bottom-4">
+                                        <div>
+                                            {/* Header Result */}
+                                            <div className="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-neutral-300 flex justify-between items-center gap-3 text-sm sm:text-base text-neutral-600">
+                                                <strong className="text-neutral-900 flex items-center gap-2 sm:gap-3 text-xs sm:text-base">
+                                                    <span className="relative flex h-3 w-3">
+                                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neutral-400 opacity-75"></span>
+                                                        <span className="relative inline-flex rounded-full h-3 w-3 bg-neutral-700"></span>
+                                                    </span>
+                                                    Hasil Deteksi (Recognize)
+                                                </strong>
+                                                <button
+                                                    onClick={() => setResult(null)}
+                                                    className="text-neutral-600 hover:text-red-600 transition-all duration-200 whitespace-nowrap cursor-pointer font-bold text-xs sm:text-sm"
+                                                >
+                                                    [X] Tutup
+                                                </button>
+                                            </div>
 
-                                                    <div className={`absolute inset-0 flex items-center justify-center text-base sm:text-lg font-bold transition-transform duration-300 group-hover:scale-110 ${isRedFlag() ? 'text-red-500' : 'text-lime-500'}`}>
-                                                        {animatedConfidence.toFixed(2)}%
+                                            {/* Teks & Deskripsi Utama */}
+                                            <div className="mb-4 sm:mb-6 space-y-2">
+                                                {/* Grid Container untuk merapikan Label, Titik Dua, dan Jawaban */}
+                                                <div className="grid grid-cols-[auto_auto_1fr] items-center gap-x-2 gap-y-1 text-xs sm:text-sm">
+
+                                                    {/* Row 1: STATUS */}
+                                                    <span className="text-neutral-800 font-medium">STATUS</span>
+                                                    <span className="text-neutral-800 font-medium">:</span>
+                                                    <div className={`font-bold tracking-wide ${isRedFlag() ? 'text-red-500' : 'text-lime-600'}`}>
+                                                        {isRedFlag() ? (
+                                                            <span className="flex items-center gap-2">
+                                                                BERPOTENSI ANCAMAN
+                                                            </span>
+                                                        ) : (
+                                                            <span className="flex items-center gap-2">
+                                                                PESAN AMAN
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Row 2: JENIS PESAN */}
+                                                    <span className="text-neutral-800 font-medium">JENIS PESAN</span>
+                                                    <span className="text-neutral-800 font-medium">:</span>
+                                                    <div className="font-bold tracking-wide text-neutral-800">
+                                                        [{result.prediction.toUpperCase()}]
+                                                    </div>
+
+                                                </div>
+
+                                                {/* Deskripsi */}
+                                                <p className="text-xs sm:text-sm text-neutral-700 font-mono leading-relaxed pt-1">
+                                                    {getDescription()}
+                                                </p>
+                                            </div>
+
+                                            {/* Circle & Chart Container */}
+                                            <div className="space-y-4">
+
+                                                {/* Circle Progress Bar */}
+                                                <div className="bg-neutral-50 sm:bg-white border border-neutral-200 sm:border-neutral-300 rounded-xl p-4 flex items-center justify-center">
+                                                    <div className="flex flex-col items-center justify-center text-center">
+                                                        <div className="relative w-24 h-24 sm:w-28 sm:h-28 mb-2 group">
+                                                            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                                                <path
+                                                                    className="text-neutral-200"
+                                                                    strokeWidth="3.5"
+                                                                    stroke="currentColor"
+                                                                    fill="none"
+                                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                                                />
+                                                                <path
+                                                                    className={`${isRedFlag() ? 'text-red-500' : 'text-lime-500'} transition-all duration-300 ease-out`}
+                                                                    strokeDasharray={`${animatedConfidence}, 100`}
+                                                                    strokeWidth="3.5"
+                                                                    strokeLinecap="round"
+                                                                    stroke="currentColor"
+                                                                    fill="none"
+                                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                                                />
+                                                            </svg>
+
+                                                            <div className={`absolute inset-0 flex items-center justify-center text-base sm:text-lg font-bold transition-transform duration-300 group-hover:scale-110 ${isRedFlag() ? 'text-red-500' : 'text-lime-500'}`}>
+                                                                {animatedConfidence.toFixed(2)}%
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="text-[10px] sm:text-xs text-neutral-800">KLASIFIKASI:</div>
+                                                        <div className="text-xs sm:text-sm font-bold text-neutral-900">
+                                                            [{result.prediction.toUpperCase()}]
+                                                        </div>
                                                     </div>
                                                 </div>
 
-                                                <div className="text-[10px] sm:text-xs text-neutral-800">KLASIFIKASI:</div>
-                                                <div className="text-xs sm:text-sm font-bold text-neutral-900">
-                                                    [{result.prediction.toUpperCase()}]
+                                                {/* Bar Chart */}
+                                                <div className="bg-neutral-50 sm:bg-white p-3 sm:p-4 rounded-xl border border-neutral-200 sm:border-neutral-300 flex flex-col justify-between">
+                                                    <div className="text-[10px] sm:text-xs text-neutral-800 mb-2">// DISTRIBUSI KEMUNGKINAN</div>
+                                                    <div className="w-full h-40 sm:h-44 relative flex-1">
+                                                        <Bar data={chartData} options={{ ...chartOptions, maintainAspectRatio: false }} />
+                                                    </div>
                                                 </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    /* Placeholder Kanan saat Belum Ada Hasil */
+                                    <div className="bg-neutral-50 border border-dashed border-neutral-300 rounded-2xl p-6 sm:p-8 h-full flex flex-col items-center justify-center text-center min-h-[250px] sm:min-h-[300px]">
+                                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-neutral-200/60 flex items-center justify-center mb-3 text-neutral-500">
+                                            📊
+                                        </div>
+                                        <h3 className="text-xs sm:text-sm font-bold text-neutral-700 mb-1">Belum Ada Hasil</h3>
+                                        <p className="text-xs text-neutral-500 max-w-xs">
+                                            Masukkan pesan di sebelah kiri dan klik "Analisis Sekarang" untuk melihat prediksi deteksi.
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* ==================== CARD FULL WIDTH: SARAN & REKOMENDASI ==================== */}
+                            {result && (
+                                <div className="col-span-1 md:col-span-2">
+                                    <div className="bg-white text-neutral-900 border-0 sm:border sm:border-neutral-400/80 rounded-2xl p-4 sm:p-6 shadow-none sm:shadow-sm font-mono transition-all duration-500 ease-out animate-in fade-in slide-in-from-bottom-4">
+
+                                        <div className="mb-4 pb-3 border-b border-neutral-300 text-sm sm:text-base font-bold text-neutral-900 flex items-center gap-2">
+                                            <span className="w-2 h-2 rounded-full bg-neutral-800"></span>
+                                            <span>PANDUAN &amp; REKOMENDASI (Learn &amp; Act)</span>
+                                        </div>
+
+                                        <div className="space-y-4 pt-2">
+                                            {/* LEARN */}
+                                            <div className="flex flex-col">
+                                                <div className="flex items-center gap-2 mb-2 text-xs sm:text-sm font-bold text-neutral-900">
+                                                    <span className="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span>
+                                                    <span>LEARN (WAWASAN)</span>
+                                                </div>
+                                                <p className="text-xs sm:text-sm text-neutral-800 leading-relaxed pl-4 font-mono">
+                                                    {getLearn()}
+                                                </p>
+                                            </div>
+
+                                            {/* ACT */}
+                                            <div className="flex flex-col pt-2">
+                                                <div className="flex items-center gap-2 mb-2 text-xs sm:text-sm font-bold text-neutral-900">
+                                                    <span className="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span>
+                                                    <span>ACT (TINDAKAN)</span>
+                                                </div>
+                                                <p className="text-xs sm:text-sm text-neutral-800 leading-relaxed pl-4 font-mono">
+                                                    {getAct()}
+                                                </p>
                                             </div>
                                         </div>
 
-                                        {/* Bar Chart */}
-                                        <div className="bg-neutral-50 sm:bg-white p-3 sm:p-4 rounded-xl border border-neutral-200 sm:border-neutral-300 flex flex-col justify-between">
-                                            <div className="text-[10px] sm:text-xs text-neutral-800 mb-2">// DISTRIBUSI KEMUNGKINAN</div>
-                                            <div className="w-full h-40 sm:h-44 relative flex-1">
-                                                <Bar data={chartData} options={{ ...chartOptions, maintainAspectRatio: false }} />
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
-                            </div>
-                        ) : (
-                            /* Placeholder Kanan saat Belum Ada Hasil */
-                            <div className="bg-neutral-50 border border-dashed border-neutral-300 rounded-2xl p-6 sm:p-8 h-full flex flex-col items-center justify-center text-center min-h-[250px] sm:min-h-[300px]">
-                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-neutral-200/60 flex items-center justify-center mb-3 text-neutral-500">
-                                    📊
-                                </div>
-                                <h3 className="text-xs sm:text-sm font-bold text-neutral-700 mb-1">Belum Ada Hasil</h3>
-                                <p className="text-xs text-neutral-500 max-w-xs">
-                                    Masukkan pesan di sebelah kiri dan klik "Analisis Sekarang" untuk melihat prediksi deteksi.
-                                </p>
-                            </div>
-                        )}
-                    </div>
+                            )}
 
-                    {/* ==================== CARD FULL WIDTH: SARAN & REKOMENDASI ==================== */}
-                    {result && (
-                        <div className="col-span-1 md:col-span-2">
-                            <div className="bg-white text-neutral-900 border-0 sm:border sm:border-neutral-400/80 rounded-2xl p-4 sm:p-6 shadow-none sm:shadow-sm font-mono transition-all duration-500 ease-out animate-in fade-in slide-in-from-bottom-4">
-
-                                <div className="mb-4 pb-3 border-b border-neutral-300 text-sm sm:text-base font-bold text-neutral-900 flex items-center gap-2">
-                                    <span className="w-2 h-2 rounded-full bg-neutral-800"></span>
-                                    <span>PANDUAN &amp; REKOMENDASI (Learn &amp; Act)</span>
-                                </div>
-
-                                {/* Tanpa Card / Sub-box tambahan di dalam */}
-                                <div className="space-y-4 pt-2">
-                                    {/* LEARN */}
-                                    <div className="flex flex-col">
-                                        <div className="flex items-center gap-2 mb-2 text-xs sm:text-sm font-bold text-neutral-900">
-                                            <span className="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span>
-                                            <span>LEARN (WAWASAN)</span>
-                                        </div>
-                                        <p className="text-xs sm:text-sm text-neutral-800 leading-relaxed pl-4 font-mono">
-                                            {getLearn()}
-                                        </p>
-                                    </div>
-
-                                    {/* ACT */}
-                                    <div className="flex flex-col pt-2">
-                                        <div className="flex items-center gap-2 mb-2 text-xs sm:text-sm font-bold text-neutral-900">
-                                            <span className="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span>
-                                            <span>ACT (TINDAKAN)</span>
-                                        </div>
-                                        <p className="text-xs sm:text-sm text-neutral-800 leading-relaxed pl-4 font-mono">
-                                            {getAct()}
-                                        </p>
-                                    </div>
-                                </div>
-
-                            </div>
                         </div>
-                    )}
-
-                </div>
+                    </div>
+                )}
 
                 <p className="text-xs sm:text-sm text-neutral-700 font-mono mt-4 max-w-7xl mx-4 sm:mx-auto">
                     DESCLAIMER: Platform ini sama sekali tidak mendukung aktivitas perjudian online ataupun penipuan, nama ataupun yang digunakan pada sample hanyalah dummy data.
